@@ -1,0 +1,9 @@
+html, body {
+  margin: 100;
+  padding: 100;
+  background: #555;
+}
+
+#globe {
+  cursor: move;  
+}
