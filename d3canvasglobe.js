@@ -1,4 +1,4 @@
-// Code got from https://jorin.me/d3-canvas-globe-hover/
+// Code adapted from https://jorin.me/d3-canvas-globe-hover/
 
 //
 // Configuration
@@ -52,6 +52,13 @@ function setAngles() {
 }
 
 function scale() {
+    projection
+        .scale((scaleFactor * Math.min(width, height)) / 2)
+        .translate([width / 2, height / 2])
+    render()
+}
+
+function resize() {
     width = document.documentElement.clientWidth
     height = document.documentElement.clientHeight
     canvas.attr('width', width).attr('height', height)
@@ -158,7 +165,7 @@ canvas
 loadData(function (world, cList) {
     land = topojson.feature(world, world.objects.land)
 
-    window.addEventListener('resize', scale)
-    scale()
+    window.addEventListener('resize', resize)
+    resize()
     autorotate = d3.timer(rotate)    
 })

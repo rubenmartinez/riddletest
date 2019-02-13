@@ -7,25 +7,39 @@
 </head>
 
 
-<div class="container-fluid">
+<div class="container-fluid" id="controls">
     <div class="row">
-        <div class="col-sm">
-            <div class="form-group">
-                <label for="assumedEarthRadius">Assumed Earth Radius</label>
-                <input type="number" class="form-control" id="assumedEarthRadius" aria-describedby="assumedEarthRadiusHelper" placeholder="Enter radius in miles">
-                <small id="assumedEarthRadiusHelper" class="form-text text-muted"><a href="#">Click here to add the real (average) radius</a></small>
+        <div class="border rounded col-sm-10" >
+            <div class="row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="assumedEarthRadius">Globe Radius</label>
+                        <input type="number" class="form-control" id="assumedEarthRadius" v-model="assumedEarthRadius" min="0" aria-describedby="assumedEarthRadiusHelper" placeholder="Enter radius in miles">
+                        <small id="assumedEarthRadiusHelper" class="form-text text-muted"><a v-on:click="fillEarthRadius" href="#">Click here to add the real (average!) Earth radius</a></small>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="distanceSouth">Distance South</label>
+                        <input type="number" class="form-control" id="distanceSouth" v-model="distanceSouth" value="1" min="0" placeholder="Enter distance in miles">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="scaleFactor">Scale Factor</label>
+                        <input type="number" step=".1" class="form-control" id="scaleFactor" min="0" v-model="scaleFactor">
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-sm">
-            <div class="form-group">
-                <label for="distanceSouth">Distance South</label>
-                <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Enter distance in miles">
-            </div>
-        </div>
-        <div class="col-sm">
-            <div class="form-group">
-                <label for="scaleFactor">Scale Factor</label>
-                <input type="number" step=".1" class="form-control" id="scaleFactor" value="0.9">
+        <div class="alert-primary border rounded col-sm-2" role="alert">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="circleDistance">Result Circle Distance</label>
+                        <input readonly type="number" class="form-control" id="circleDistance" :value="circleDistance">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -40,6 +54,7 @@
 <script src="https://d3js.org/d3-geo.v1.min.js"></script>
 <script src="https://d3js.org/topojson.v2.min.js"></script>
 <script src="https://bl.ocks.org/mbostock/raw/7ea1dde508cec6d2d95306f92642bc42/6aac691494f752142a67cc43c51a0fd09896dbd4/versor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="d3canvasglobe.js"></script>
 <script src="riddle.js"></script>
 
