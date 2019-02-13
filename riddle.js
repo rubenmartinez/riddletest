@@ -9,6 +9,7 @@
 
 var pathColor = '#f22';
 var pathLineWidth = 2;
+var pathCircleWidth = 1;
 
 Math.radians = function (degrees) {
     return degrees * Math.PI / 180;
@@ -26,21 +27,22 @@ var app = new Vue({
     data: {
         assumedEarthRadius: 3960,
         distanceSouth: 1,
+        distanceSouthAlert: false,
         scaleFactor: 0.9
     },
     computed: {
         circleDistance: function() {
             return 123;
         },
-        southLat: function() {
-            return this.angleFromNorthPole();
+        southLatitude: function() {
+            return 90 - Math.degrees( this.angleFromNorthPoleRadians() );
         },
         southPoint: function() {
             return {
                 "type": "Feature",
                 "geometry": {
                     "type": "LineString",
-                    "coordinates": [[0, 90], [0, this.southLat]]
+                    "coordinates": [[0, 90], [0, this.southLatitude]]
                 }
             }
         }
@@ -49,14 +51,28 @@ var app = new Vue({
         scaleFactor: function() {
             scaleFactor = this.scaleFactor;
             scale();
+        },
+        distanceSouth: function() {
+            maxDistanceSouth = this.assumedEarthRadius * Math.PI / 2;
+            threshold = maxDistanceSouth*.01;
+            if (this.distanceSouth > maxDistanceSouth - threshold) {
+                this.distanceSouth = maxDistanceSouth - threshold;
+                this.distanceSouthAlert = true;
+            }
+            else if (this.distanceSouth < maxDistanceSouth - 2*threshold) {
+                this.distanceSouthAlert = false;
+            }
         }
     },
     methods: {
         fillEarthRadius: function() {
             this.assumedEarthRadius = 3960;
         },
-        angleFromNorthPole: function() {
-            return 90-Math.degrees(this.distanceSouth / this.assumedEarthRadius);
+        angleFromNorthPoleRadians: function() {
+            return this.distanceSouth / this.assumedEarthRadius;;
+        },
+        innerCircleRadius: function() {
+            
         }
     }
 })

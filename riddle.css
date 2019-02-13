@@ -7,3 +7,7 @@ html, body {
 #globe {
   cursor: move;  
 }
+
+.distanceSouthAlert {
+  color: red;
+}

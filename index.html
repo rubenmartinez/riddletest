@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
-                        <label for="distanceSouth">Distance South</label>
+                        <label for="distanceSouth">Distance South<small v-if="distanceSouthAlert" style="display: hidden" class="text-danger" role="alert"> (Max distance south reached)</small></label>
                         <input type="number" class="form-control" id="distanceSouth" v-model="distanceSouth" value="1" min="0" placeholder="Enter distance in miles">
                     </div>
                 </div>
