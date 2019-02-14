@@ -26,8 +26,8 @@ var horizontalCircleLineString;
 var app = new Vue({
     el: '#controls',
     data: {
-        assumedEarthRadius: 3960,
-        distanceSouth: 1,
+        assumedEarthRadius: 1,
+        distanceSouth: 0.1599,
         distanceSouthAlert: false,
         scaleFactor: 0.9
     },
