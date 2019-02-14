@@ -13,15 +13,15 @@
             <div class="row">
                 <div class="col-sm">
                     <div class="form-group">
-                        <label for="assumedEarthRadius">Globe Radius</label>
-                        <input type="number" class="form-control" id="assumedEarthRadius" v-model="assumedEarthRadius" min="0" aria-describedby="assumedEarthRadiusHelper" placeholder="Enter radius in miles">
+                        <label for="assumedEarthRadius">Assumed Globe Radius</label>
+                        <input type="number" step="100" class="form-control" id="assumedEarthRadius" v-model="assumedEarthRadius" min="0" aria-describedby="assumedEarthRadiusHelper" placeholder="Enter radius in miles">
                         <small id="assumedEarthRadiusHelper" class="form-text text-muted"><a v-on:click="fillEarthRadius" href="#">Click here to add the real (average!) Earth radius</a></small>
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="distanceSouth">Distance South<small v-if="distanceSouthAlert" style="display: hidden" class="text-danger" role="alert"> (Distance to ecuator reached)</small></label>
-                        <input type="number" class="form-control" id="distanceSouth" v-model="distanceSouth" value="1" min="0" placeholder="Enter distance in miles">
+                        <input type="number" step="100" class="form-control" id="distanceSouth" v-model="distanceSouth" value="1" min="0" placeholder="Enter distance in miles">
                     </div>
                 </div>
                 <div class="col-sm">

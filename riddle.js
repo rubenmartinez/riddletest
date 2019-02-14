@@ -20,7 +20,8 @@ Math.degrees = function (radians) {
 };
 
 
-var southPoint;
+var southPointLineString;
+var horizontalCircleLineString;
 
 var app = new Vue({
     el: '#controls',
@@ -32,17 +33,26 @@ var app = new Vue({
     },
     computed: {
         circleDistance: function() {
-            return 123;
+            return 2 * Math.PI * this.getInnerCircleRadius(this.getAngleFromNorthPoleRadians());
         },
         southLatitude: function() {
-            return 90 - Math.degrees( this.angleFromNorthPoleRadians() );
+            return 90 - Math.degrees( this.getAngleFromNorthPoleRadians() );
         },
-        southPoint: function() {
+        southPointLineString: function() {
             return {
                 "type": "Feature",
                 "geometry": {
                     "type": "LineString",
                     "coordinates": [[0, 90], [0, this.southLatitude]]
+                }
+            }
+        },
+        horizontalCircleLineString: function() {
+            return {
+                "type": "Feature",
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": this.getHorizontalCircleCoordinates(this.southLatitude)
                 }
             }
         }
@@ -53,32 +63,49 @@ var app = new Vue({
             scale();
         },
         distanceSouth: function() {
-            maxDistanceSouth = this.assumedEarthRadius * Math.PI / 2;
-            threshold = maxDistanceSouth*.01;
-            if (this.distanceSouth > maxDistanceSouth - threshold) {
-                this.distanceSouth = maxDistanceSouth - threshold;
-                this.distanceSouthAlert = true;
-            }
-            else if (this.distanceSouth < maxDistanceSouth - 2*threshold) {
-                this.distanceSouthAlert = false;
-            }
+            this.validateDistanceSouth();
+        },
+        assumedEarthRadius: function() {
+            this.validateDistanceSouth();
         }
     },
     methods: {
         fillEarthRadius: function() {
             this.assumedEarthRadius = 3960;
         },
-        angleFromNorthPoleRadians: function() {
+        getAngleFromNorthPoleRadians: function() {
             return this.distanceSouth / this.assumedEarthRadius;;
         },
-        innerCircleRadius: function() {
-            
+        getInnerCircleRadius: function (angleFromNorthPoleRadians) {
+            return Math.sin(angleFromNorthPoleRadians)*this.assumedEarthRadius;
+
+        },
+        getHorizontalCircleCoordinates: function (latitude) {
+            coordinates = [];
+            for (var i=-180; i<180; i+=.1) {
+                coordinates.push([i, latitude]);
+            }
+            return coordinates;
+        },
+        validateDistanceSouth: function () {
+            maxDistanceSouth = this.assumedEarthRadius * Math.PI / 2;
+            threshold = maxDistanceSouth * .01;
+            if (this.distanceSouth > maxDistanceSouth - threshold) {
+                this.distanceSouth = maxDistanceSouth - threshold;
+                this.distanceSouthAlert = true;
+            }
+            else if (this.distanceSouth < maxDistanceSouth - 2 * threshold) {
+                this.distanceSouthAlert = false;
+            }
         }
     }
 })
 
 function externalRender() {
-    if (app.southPoint) {
-        stroke(app.southPoint, pathColor, pathLineWidth);
+    if (app.southPointLineString) {
+        stroke(app.southPointLineString, pathColor, pathLineWidth);
+    }
+    if (app.horizontalCircleLineString) {
+        stroke(app.horizontalCircleLineString, pathColor, pathCircleWidth);
     }
 }
